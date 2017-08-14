@@ -1,0 +1,87 @@
+- name: Create instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: Provision instance
+      ec2:
+         key_name: ajp-conjur-aws
+         instance_type: m3.medium
+         image: ami-430b1a55
+         group: default
+         wait: yes
+         instance_tags:
+           Name: Conjur CE
+           Description: Used as the basis for the Conjur CE AMI
+           Version: "{{ conjur_version }}"
+
+      register: ec2
+
+    - name: Add new instance to coreos group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: coreos
+      with_items: "{{ ec2.instances }}"
+
+    - name: Wait for SSH to come up
+      wait_for:
+        host: "{{ item.public_ip }}"
+        port: 22
+        delay: 60
+        timeout: 320
+        state: started
+      with_items: "{{ ec2.instances }}"
+
+- name: Prepare instance with ansible
+  hosts: coreos
+  gather_facts: no
+    
+  roles:
+    - defunctzombie.coreos-bootstrap
+
+  tasks:
+    - name: install docker-py
+      pip: 
+        name: docker-py
+        executable: /home/core/bin/pip
+
+- name: Prepare Conjur
+  hosts: coreos
+  roles:
+    - conjur
+
+- name: Create image
+  hosts: coreos
+  vars:
+    terminate_after_create: true
+
+  tasks:
+    - ec2_facts:
+
+#    - debug: var=hostvars
+
+    - name: AMI creation
+      connection: local
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      ec2_ami:
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        wait: yes
+        name: conjur-ce
+        tags:
+          Name: "Conjur CE {{ conjur_version }}"
+          Version: "{{ conjur_version }}"
+      notify:
+        - terminate image
+      
+  handlers:
+    - name: terminate image
+      connection: local
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      ec2:
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        state: absent
+      when: terminate_after_create
