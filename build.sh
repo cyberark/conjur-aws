@@ -17,6 +17,7 @@ docker run -i --rm \
   -e AWS_REGION \
   -e AWS_ACCESS_KEY_ID \
   -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_SSH_KEY_ID \
   -v $SSH_KEY:/root/.ssh/id_rsa \
   -e ANSIBLE_HOST_KEY_CHECKING=False \
   -v $PWD:/ansible \

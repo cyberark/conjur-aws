@@ -7,7 +7,7 @@
 
     - name: Provision instance
       ec2:
-         key_name: ajp-conjur-aws
+         key_name: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
          instance_type: m3.medium
          image: ami-430b1a55
          group: default

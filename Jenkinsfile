@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Build the Conjur CE AMI') {
       steps {
-        sh './build.sh'
+        sh 'summon ./build.sh'
       }
     }
   }
