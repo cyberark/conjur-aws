@@ -60,8 +60,6 @@
   tasks:
     - ec2_facts:
 
-#    - debug: var=hostvars
-
     - name: AMI creation
       connection: local
       vars:
@@ -73,11 +71,8 @@
         tags:
           Name: "Conjur CE {{ conjur_version }}"
           Version: "{{ conjur_version }}"
-      notify:
-        - terminate image
-      
-  handlers:
-    - name: terminate image
+
+    - name: terminate instance
       connection: local
       vars:
         ansible_python_interpreter: /usr/bin/python
