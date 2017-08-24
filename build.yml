@@ -57,7 +57,7 @@
   hosts: coreos
   vars:
     terminate_after_create: true
-
+    ami_name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
     - ec2_facts:
 
@@ -68,7 +68,7 @@
       ec2_ami:
         instance_id: "{{ ansible_ec2_instance_id }}"
         wait: yes
-        name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
+        name: "{{ ami_name }}"
         tags:
           Name: "Conjur CE {{ conjur_version }}"
           Version: "{{ conjur_version }}"

@@ -2,9 +2,6 @@
 - name: Create Conjur CE cluster
   hosts: localhost
   connection: local
-  vars:
-    stack_name: "conjur-ce-test-{{ ansible_date_time.epoch }}"
-    terminate_after_test: true
 
   tasks:
     - name: start cluster
@@ -24,12 +21,20 @@
       register: stack
 
     - name: test cluster
-      uri:
-        method: OPTIONS
-        url: "http://{{ stack.stack_outputs['ConjurAddress'] }}"
+#      uri:
+#        method: OPTIONS
+#        url: "http://{{ stack.stack_outputs['ConjurAddress'] }}"
+      command: "curl -vs -X OPTIONS http://{{ stack.stack_outputs['ConjurAddress'] }}"
 
-    - name: cleanup
+- name: Tear down Conjur CE cluster
+  hosts: localhost
+  connection: local
+  vars:
+    terminate_after_test: yes
+
+  tasks:
+    - name: stop cluster
       cloudformation:
-        stack_name: "conjur-ce-test"
+        stack_name: "{{ stack_name }}"
         state: absent
       when: terminate_after_test
