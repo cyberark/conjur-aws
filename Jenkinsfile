@@ -12,6 +12,15 @@ pipeline {
     stage('Build the Conjur CE AMI') {
       steps {
         sh 'summon ./build.sh'
+
+        archiveArtifacts "ami-id.out"
+      }
+
+    }
+
+    stage('Test the AMI') {
+      steps {
+        sh 'summon ./test.sh'
       }
     }
   }

@@ -1,3 +1,4 @@
+---
 - name: Create instance
   hosts: localhost
   connection: local
@@ -67,10 +68,14 @@
       ec2_ami:
         instance_id: "{{ ansible_ec2_instance_id }}"
         wait: yes
-        name: conjur-ce
+        name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
         tags:
           Name: "Conjur CE {{ conjur_version }}"
           Version: "{{ conjur_version }}"
+      register: ami
+
+    - name: write AMI id
+      local_action: copy content="{{ ami.image_id}}" dest=/ansible/ami-id.out
 
     - name: terminate instance
       connection: local

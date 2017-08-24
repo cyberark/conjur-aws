@@ -39,11 +39,22 @@ create() {
   systemctl restart conjur
 }
 
+wait_for_server() {
+  for i in `seq 1 10`; do
+    curl -fs -X OPTIONS http://localhost >/dev/null && break
+    sleep 2
+  done
+
+  # This will fail if the server didn't come up
+  curl -f -X OPTIONS http://localhost
+}
 
 start() {
   migrate
 
   docker start -a conjur 
+
+  docker attach conjur
 }
 
 stop() {
@@ -67,6 +78,9 @@ case "$cmd" in
     ;;
   restart)
     restart
+    ;;
+  wait_for_server)
+    wait_for_server
     ;;
   *)
     echo "Usage: $0 {create|start|stop|restart}"
