@@ -1,13 +1,15 @@
 ---
-- name: Create Conjur CE cluster
+- name: Test Conjur CE cluster
   hosts: localhost
   connection: local
+  vars:
+    terminate_after_test: no
 
   tasks:
-    - name: start cluster
+    - name: manage cluster
       cloudformation:
         stack_name: "{{ stack_name }}"
-        state: present
+        state: "{{ terminate_after_test | ternary('absent', 'present') }}"
         disable_rollback: no
         template: /ansible/conjur-ce.yml
         template_parameters:
@@ -25,16 +27,7 @@
 #        method: OPTIONS
 #        url: "http://{{ stack.stack_outputs['ConjurAddress'] }}"
       command: "curl -vs -X OPTIONS http://{{ stack.stack_outputs['ConjurAddress'] }}"
-
-- name: Tear down Conjur CE cluster
-  hosts: localhost
-  connection: local
-  vars:
-    terminate_after_test: yes
-
-  tasks:
-    - name: stop cluster
-      cloudformation:
-        stack_name: "{{ stack_name }}"
-        state: absent
-      when: terminate_after_test
+      register: result
+      until: result.rc == 0
+      retries: 5
+      delay: 30
