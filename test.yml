@@ -3,13 +3,13 @@
   hosts: localhost
   connection: local
   vars:
-    terminate_after_test: no
+    test_stack: yes
 
   tasks:
     - name: manage cluster
       cloudformation:
         stack_name: "{{ stack_name }}"
-        state: "{{ terminate_after_test | ternary('absent', 'present') }}"
+        state: "{{ test_stack | ternary('present', 'absent') }}"
         disable_rollback: no
         template: /ansible/conjur-ce.yml
         template_parameters:
@@ -31,3 +31,4 @@
       until: result.rc == 0
       retries: 5
       delay: 30
+      when: test_stack
