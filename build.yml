@@ -79,7 +79,7 @@
       register: ami
 
     - name: write AMI id
-      local_action: copy content="{{ ami.image_id}}" dest=/ansible/ami-id.out
+      local_action: copy content="{{ ami.image_id}}" dest="/ansible/{{ ami_id_filename }}"
 
     - name: terminate instance
       connection: local
