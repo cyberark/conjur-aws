@@ -1,15 +1,14 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
-ami_id_filename="$1"; shift
+set -a
 
 curl -s "${CFT-https://raw.githubusercontent.com/cyberark/conjur/cft_170815/aws/cft.yml}" > conjur-ce.yml
 
-set -a
-AMI_ID=$(< "${ami_id_filename}")
+AMI_ID=$(< "${AMI_ID_FILE}")
 : ${STACK_NAME=conjur-ce-test-$(date +%s)}
 
 finish() {
-  ./ansible.sh ansible-playbook -e stack_name=${STACK_NAME} -e test_stack=false -vvv test.yml
+  ./ansible.sh ansible-playbook -e stack_name=${STACK_NAME} -e stack_state=absent -vvv stack.yml
 }
 trap finish EXIT
   

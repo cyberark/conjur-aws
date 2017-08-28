@@ -1,26 +1,11 @@
 ---
+- include: stack.yml stack_state=present
+
 - name: Test Conjur CE cluster
   hosts: localhost
   connection: local
-  vars:
-    test_stack: yes
 
   tasks:
-    - name: manage cluster
-      cloudformation:
-        stack_name: "{{ stack_name }}"
-        state: "{{ (test_stack | bool) | ternary('present', 'absent') }}"
-        disable_rollback: no
-        template: /ansible/conjur-ce.yml
-        template_parameters:
-          KeyName: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
-          ImageId: "{{ lookup('env', 'AMI_ID') }}"
-          ConjurAccount: test
-          ConjurAdminPassword: secret
-          DBAdminPassword: secretdbpassword
-          VpcId: vpc-36803e50
-          VpcSubnetIds: "subnet-a9c7b484,subnet-f10c2cb8"
-      register: stack
 
     - name: test cluster
 #      uri:
@@ -31,4 +16,3 @@
       until: result.rc == 0
       retries: 5
       delay: 30
-      when: test_stack

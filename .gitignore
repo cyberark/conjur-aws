@@ -1,3 +1,4 @@
-ami-id.out
+AMI.txt
+EC2.txt
 conjur-ce.yml
-main.retry
+*.retry

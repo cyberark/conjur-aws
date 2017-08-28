@@ -9,24 +9,23 @@ pipeline {
   }
 
   environment {
-    AMI_FILE = "AMI.txt"
+    INSTANCE_ID_FILE = "EC2.txt"
+    AMI_ID_FILE = "AMI.txt"
   }
 
   stages {
     stage('Build the Conjur CE AMI') {
       steps {
-        // It would feel more natural to have build.sh write out the AMI ID to stdout and redirect it to a file. Ansible
-        // is sloppy with its handling of stdout and stderr, though, so that's not really an option.
-        sh "summon ./build.sh ${AMI_FILE}"
+        sh "summon ./build.sh"
 
-        archiveArtifacts "${AMI_FILE}"
+        archiveArtifacts "${INSTANCE_ID_FILE} ${AMI_ID_FILE}"
       }
 
     }
 
     stage('Test the AMI') {
       steps {
-        sh "summon ./test.sh ${AMI_FILE}"
+        sh "summon ./test.sh"
       }
     }
   }
