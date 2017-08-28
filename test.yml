@@ -9,7 +9,7 @@
     - name: manage cluster
       cloudformation:
         stack_name: "{{ stack_name }}"
-        state: "{{ test_stack | ternary('present', 'absent') }}"
+        state: "{{ (test_stack | bool) | ternary('present', 'absent') }}"
         disable_rollback: no
         template: /ansible/conjur-ce.yml
         template_parameters:
