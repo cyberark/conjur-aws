@@ -34,7 +34,7 @@
         timeout: 320
         state: started
       register: result
-      retries: 2
+      retries: 5
       delay: 0
       until: result|success
       with_items: "{{ ec2.instances }}"
