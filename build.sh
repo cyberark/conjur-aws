@@ -20,4 +20,4 @@ finish() {
 }
 trap finish EXIT
 
-./ansible.sh ${@-ansible-playbook -v -e ami_id_filename="${AMI_ID_FILE}" -e instance_id_filename="${INSTANCE_ID_FILE}" build.yml}
+./ansible.sh ${@-ansible-playbook -vvv -e ami_id_filename="${AMI_ID_FILE}" -e instance_id_filename="${INSTANCE_ID_FILE}" build.yml}
