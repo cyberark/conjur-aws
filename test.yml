@@ -7,6 +7,9 @@
 
   tasks:
 
+    - include: wait_for_ssh.yml ssh_host="{{ stack.stack_outputs['ConjurAddress'] }}"
+      static: no
+
     - name: test cluster
 #      uri:
 #        method: OPTIONS
