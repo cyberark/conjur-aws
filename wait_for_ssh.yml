@@ -1,6 +1,3 @@
-- debug: 
-    msg: "ssh host: {{ ssh_host }}"
-
 - name: Wait for SSH to come up
   wait_for:
     host: "{{ ssh_host }}"
