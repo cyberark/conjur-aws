@@ -18,7 +18,7 @@ pipeline {
       steps {
         sh "summon ./build.sh"
 
-        archiveArtifacts "${INSTANCE_ID_FILE} ${AMI_ID_FILE}"
+        archiveArtifacts "*.txt"
       }
 
     }
