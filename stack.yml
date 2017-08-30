@@ -12,6 +12,7 @@
         disable_rollback: no
         template: /ansible/conjur-ce.yml
         template_parameters:
+          InstanceType: m4.large
           KeyName: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
           ImageId: "{{ lookup('env', 'AMI_ID') }}"
           ConjurAccount: test
