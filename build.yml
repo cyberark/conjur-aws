@@ -1,0 +1,74 @@
+---
+- include: instance.yml instance_state=present
+
+- name: wait for instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: write instance id to file
+      local_action: copy content="{{ item.id }}" dest="/ansible/{{ instance_id_filename }}"
+      with_items: "{{ ec2.instances }}"
+
+    - name: Add new instance to coreos group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: coreos
+      with_items: "{{ ec2.instances }}"
+
+    - include: wait_for_ssh.yml ssh_host="{{ item.public_ip }}"
+      static: no
+      with_items: "{{ ec2.instances }}"
+      
+- name: Prepare instance with ansible
+  hosts: coreos
+  gather_facts: no
+    
+  roles:
+    - defunctzombie.coreos-bootstrap
+
+  tasks:
+    - name: install docker-py
+      pip: 
+        name: docker-py
+        executable: /home/core/bin/pip
+
+- name: Prepare Conjur
+  hosts: coreos
+  roles:
+    - conjur
+
+- name: Create image
+  hosts: coreos
+  vars:
+    terminate_after_create: true
+    ami_name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
+  tasks:
+    - ec2_facts:
+
+    - name: AMI creation
+      connection: local
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      ec2_ami:
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        wait: yes
+        name: "{{ ami_name }}"
+        tags:
+          Name: "Conjur CE {{ conjur_version }}"
+          Version: "{{ conjur_version }}"
+      register: ami
+
+    - name: write AMI id
+      local_action: copy content="{{ ami.image_id}}" dest="/ansible/{{ ami_id_filename }}"
+
+    - name: terminate instance
+      connection: local
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      ec2:
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        state: absent
+      when: terminate_after_create

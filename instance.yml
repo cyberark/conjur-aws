@@ -1,0 +1,21 @@
+---
+- name: manage EC2 instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: set instance state
+      ec2:
+         key_name: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
+         instance_ids: "{{ instance_id  | default(omit) }}"
+         state: "{{ instance_state }}"
+         instance_type: m3.medium
+         image: ami-430b1a55
+         group: default
+         wait: yes
+         instance_tags:
+           Name: Conjur CE
+           Description: Used as the basis for the Conjur CE AMI
+           Version: "{{ conjur_version }}"
+
+      register: ec2

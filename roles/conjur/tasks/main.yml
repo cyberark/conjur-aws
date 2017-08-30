@@ -1,0 +1,68 @@
+---
+- name: Copy the image loading script
+  copy:
+    src: load-conjur.sh
+    dest: "{{ ansible_env.HOME }}/load-conjur.sh"
+    mode: u+rwx
+
+- name: Load the image
+  docker_container:
+    name: conjur-puller
+    image: docker:dind
+    detach: no
+    cleanup: yes
+    command: /load-conjur.sh
+    privileged: no
+    env:
+      CONJUR_IMAGE: "{{conjur_image}}"
+      REGISTRY: "{{registry}}"
+      REGISTRY_USER: "{{registry_user}}"
+      REGISTRY_PASSWORD: "{{registry_password}}"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ ansible_env.HOME }}/load-conjur.sh:/load-conjur.sh"
+
+- name: Install the CLI
+  docker_image:
+    name: conjurinc/cli5
+    state: present
+ 
+- name: Remove DinD
+  docker_image:
+    name: docker:dind
+    state: absent
+
+- name: Configure service
+  become: true
+  block: 
+    - file:
+        path: /opt/conjur/bin
+        state: directory
+        mode: 0755
+
+    - copy:
+        src: server.sh
+        dest: /opt/conjur/bin/server
+        mode: a+x
+
+    - copy:
+        src: set_admin_password.sh
+        dest: /opt/conjur/bin/set_admin_password
+        mode: a+x
+
+    - copy:
+        src: conjur.service
+        dest: /etc/systemd/system/conjur.service
+
+    - lineinfile:
+        path: /etc/default/conjur
+        regexp: '^CONJUR_VERSION='
+        line: "CONJUR_VERSION={{ conjur_version }}"
+        state: present
+        create: yes
+
+    - service:
+        name: conjur
+        enabled: no
+        state: stopped

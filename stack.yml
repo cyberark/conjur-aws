@@ -1,0 +1,22 @@
+---
+- name: Manage Conjur CE stack
+
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: manage cluster
+      cloudformation:
+        stack_name: "{{ stack_name }}"
+        state: "{{ stack_state }}"
+        disable_rollback: no
+        template: /ansible/conjur-ce.yml
+        template_parameters:
+          KeyName: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
+          ImageId: "{{ lookup('env', 'AMI_ID') }}"
+          ConjurAccount: test
+          ConjurAdminPassword: secret
+          DBAdminPassword: secretdbpassword
+          VpcId: vpc-36803e50
+          VpcSubnetIds: "subnet-a9c7b484,subnet-f10c2cb8"
+      register: stack

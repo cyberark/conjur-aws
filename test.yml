@@ -1,0 +1,21 @@
+---
+- include: stack.yml stack_state=present
+
+- name: Test Conjur CE cluster
+  hosts: localhost
+  connection: local
+
+  tasks:
+
+    - include: wait_for_ssh.yml ssh_host="{{ stack.stack_outputs['ConjurAddress'] }}"
+      static: no
+
+    - name: test cluster
+#      uri:
+#        method: OPTIONS
+#        url: "http://{{ stack.stack_outputs['ConjurAddress'] }}"
+      command: "curl -vs -X OPTIONS http://{{ stack.stack_outputs['ConjurAddress'] }}"
+      register: result
+      until: result.rc == 0
+      retries: 5
+      delay: 30

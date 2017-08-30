@@ -1,0 +1,2 @@
+---
+conjur_version: "{{ lookup('env', 'CONJUR_VERSION') }}"
