@@ -2,7 +2,7 @@
 
 set -a
 
-curl -s "${CFT-https://raw.githubusercontent.com/cyberark/conjur/cft_170815/aws/cloudformation/conjur.yml}" > conjur-ce.yml
+curl -s "${CFT-https://raw.githubusercontent.com/cyberark/conjur/master/aws/cloudformation/conjur.yml}" > conjur-ce.yml
 
 AMI_ID=$(< "${AMI_ID_FILE}")
 : ${STACK_NAME=conjur-ce-test-$(date +%s)}
