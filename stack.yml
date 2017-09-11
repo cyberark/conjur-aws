@@ -14,7 +14,7 @@
         template_parameters:
           InstanceType: m4.large
           KeyName: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
-          ImageId: "{{ lookup('env', 'AMI_ID') }}"
+          ImageId: "{{ ami_id }}"
           ConjurAccount: test
           ConjurAdminPassword: secret
           DBAdminPassword: secretdbpassword

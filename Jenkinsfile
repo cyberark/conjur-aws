@@ -28,6 +28,16 @@ pipeline {
         sh "summon ./test.sh"
       }
     }
+
+    stage('Publish CFT') {
+      when {
+        branch 'master'
+        branch 'publish-cft_170908'
+      }
+      steps {
+        sh 'summon ./publish-cft.sh'
+      }
+    }
   }
 
   post {

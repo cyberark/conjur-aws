@@ -1,2 +1,3 @@
 ---
+ami_id: "{{ lookup('env', 'AMI_ID') }}"
 conjur_version: "{{ lookup('env', 'CONJUR_VERSION') }}"
