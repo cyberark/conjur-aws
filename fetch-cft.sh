@@ -4,4 +4,4 @@ set -a
 
 AMI_ID=$(< "${AMI_ID_FILE}")
 
-./ansible.sh ${@-ansible-playbook -vv publish-cft.yml}
+./ansible.sh ${@-ansible-playbook -vv fetch-cft.yml}

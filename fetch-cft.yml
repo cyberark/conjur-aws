@@ -1,0 +1,22 @@
+---
+
+- name: pull CloudFormation template
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    bucket: "conjur-ci-public"
+
+  tasks:
+    - name: download cft
+      get_url:
+        url: https://raw.githubusercontent.com/cyberark/conjur/master/aws/cloudformation/conjur.yml      
+        dest: /ansible/conjur.yml
+        force: yes
+
+    - name: update AMI ID
+      lineinfile:
+        path: /ansible/conjur.yml
+        state: present
+        insertafter: 'Type: AWS::EC2::Image::Id'
+        line: "    Default: {{ ami_id }}"

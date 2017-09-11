@@ -10,11 +10,11 @@
         stack_name: "{{ stack_name }}"
         state: "{{ stack_state }}"
         disable_rollback: no
-        template: /ansible/conjur-ce.yml
+        template: /ansible/conjur.yml
         template_parameters:
+          # Don't specify ImageId, we want the default that got added by fetch-cft.yml
           InstanceType: m4.large
           KeyName: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
-          ImageId: "{{ ami_id }}"
           ConjurAccount: test
           ConjurAdminPassword: secret
           DBAdminPassword: secretdbpassword
