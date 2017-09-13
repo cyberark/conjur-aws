@@ -25,7 +25,7 @@ pipeline {
 
     stage('Fetch and update the CFT') {
       steps {
-        sh 'summon ./fetch-cft.sh'
+        sh './fetch-cft.sh'
       }
     }
 
