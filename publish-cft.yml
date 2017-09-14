@@ -1,0 +1,15 @@
+---
+- name: publish CloudFormation template
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    bucket: "conjur-ci-public"
+
+  tasks:
+    - name: write template to S3
+      s3:
+        bucket: "{{ bucket }}"
+        object: conjur-latest.yml
+        src: /ansible/conjur.yml
+        mode: put

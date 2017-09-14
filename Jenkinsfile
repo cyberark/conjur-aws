@@ -23,9 +23,27 @@ pipeline {
 
     }
 
+    stage('Fetch and update the CFT') {
+      steps {
+        sh './fetch-cft.sh'
+      }
+    }
+
     stage('Test the AMI') {
       steps {
         sh "summon ./test.sh"
+      }
+    }
+
+    stage('Publish CFT') {
+      when {
+        anyOf {
+          branch 'master'
+          branch 'publish-cft_170908'
+        }
+      }
+      steps {
+        sh 'summon ./publish-cft.sh'
       }
     }
   }

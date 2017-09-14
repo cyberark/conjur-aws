@@ -9,9 +9,10 @@
          key_name: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
          instance_ids: "{{ instance_id  | default(omit) }}"
          state: "{{ instance_state }}"
-         instance_type: m3.medium
+         instance_type: m4.large
          image: ami-430b1a55
-         group: default
+         assign_public_ip: yes
+         vpc_subnet_id: subnet-a9c7b484
          wait: yes
          instance_tags:
            Name: Conjur CE
