@@ -17,5 +17,5 @@
       command: "curl -vs -X OPTIONS http://{{ stack.stack_outputs['ConjurAddress'] }}"
       register: result
       until: result.rc == 0
-      retries: 10
+      retries: 20
       delay: 60
