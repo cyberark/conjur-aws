@@ -17,6 +17,6 @@
          instance_tags:
            Name: Conjur CE
            Description: Used as the basis for the Conjur CE AMI
-           Version: "{{ conjur_version }}"
+           Version: "{{ lookup('env', 'CONJUR_VERSION') }}"
 
       register: ec2
