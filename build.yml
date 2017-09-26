@@ -21,17 +21,17 @@
     - include: wait_for_ssh.yml ssh_host="{{ item.public_ip }}"
       static: no
       with_items: "{{ ec2.instances }}"
-      
+
 - name: Prepare instance with ansible
   hosts: coreos
   gather_facts: no
-    
+
   roles:
     - defunctzombie.coreos-bootstrap
 
   tasks:
     - name: install docker-py
-      pip: 
+      pip:
         name: docker-py
         executable: /home/core/bin/pip
 
@@ -57,7 +57,7 @@
         wait: yes
         name: "{{ ami_name }}"
         tags:
-          Name: "Conjur CE {{ conjur_version }}"
+          Name: "conjur-ce-{{ conjur_version }}"
           Version: "{{ conjur_version }}"
       register: ami
 
