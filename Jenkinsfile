@@ -17,9 +17,11 @@ pipeline {
     stage('Build the Conjur CE AMI') {
       steps {
         sh "summon ./build.sh"
-
         archiveArtifacts "*.txt"
+
+        milestone(1)  // AMI is now built
       }
+
 
     }
 
@@ -32,6 +34,7 @@ pipeline {
     stage('Test the AMI') {
       steps {
         sh "summon ./test.sh"
+        milestone(2)  // AMI has been tested
       }
     }
 
@@ -39,7 +42,6 @@ pipeline {
       when {
         anyOf {
           branch 'master'
-          branch 'publish-cft_170908'
         }
       }
       steps {
@@ -51,7 +53,7 @@ pipeline {
   post {
     always {
       sh 'docker run -i --rm -v $PWD:/src -w /src alpine/git clean -fxd'
-    }      
+    }
     failure {
       slackSend(color: 'danger', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} FAILURE (<${env.BUILD_URL}|Open>)")
     }
