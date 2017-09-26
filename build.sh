@@ -1,13 +1,5 @@
 #!/bin/bash -eux
 
-set -a
-
-name=conjur
-
-CONJUR_VERSION=0.1.0-stable
-CONJUR_IMAGE=quay.io/conjur/${name}:${CONJUR_VERSION}
-CONJUR_TARBALL=${name}_${CONJUR_VERSION}.tar.gz
-
 # Default these variables to make development easier. They should be get in the environment (i.e. in the Jenkinsfile)
 # when this script gets used as part of a build.
 : ${INSTANCE_ID_FILE=dev-EC2.txt}
