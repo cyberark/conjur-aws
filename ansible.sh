@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-docker build -t ansible-boto .
+docker build -t ansible-boto - <Dockerfile
 
 tty=$(tty -s && echo "-t" || true)
 
