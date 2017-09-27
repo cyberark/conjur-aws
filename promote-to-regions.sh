@@ -4,6 +4,7 @@ SOURCE_AMI="${1:-$(cat AMI.txt)}"
 PROMOTER_IMAGE='registry.tld/conjurinc/ami-promoter'
 
 REGIONS=(
+  us-east-2
   us-west-1
   us-west-2
   eu-west-1

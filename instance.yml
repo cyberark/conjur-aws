@@ -15,8 +15,8 @@
          vpc_subnet_id: subnet-a9c7b484
          wait: yes
          instance_tags:
-           Name: cyberark-conjur-ce-base
-           Description: Base instance for cyberark-conjur-ce AMI
+           Name: cyberark-conjur-base
+           Description: Base instance for cyberark-conjur AMI
            Version: "{{ lookup('env', 'CONJUR_VERSION') }}"
 
       register: ec2

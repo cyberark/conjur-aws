@@ -3,7 +3,7 @@
 set -a
 
 AMI_ID=$(< "${AMI_ID_FILE}")
-: ${STACK_NAME=conjur-ce-test-$(date +%s)}
+: ${STACK_NAME=conjur-ami-test-$(date +%s)}
 
 finish() {
   ./ansible.sh ansible-playbook -e stack_name=${STACK_NAME} -e stack_state=absent -vvv stack.yml
