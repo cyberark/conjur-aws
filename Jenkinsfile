@@ -47,7 +47,7 @@ pipeline {
         expression { return params.PROMOTE_TO_REGIONS }
       }}
       steps {
-        sh "./promote-to-regions.sh $(cat AMI.txt)"
+        sh './promote-to-regions.sh $(cat AMI.txt)'
         archive "AMIS.json"
       }
     }
