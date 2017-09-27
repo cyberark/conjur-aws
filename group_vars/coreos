@@ -1,8 +1,2 @@
----
-
 ansible_ssh_user: core
 ansible_python_interpreter: "/home/core/bin/python"
-
-registry: "{{ lookup('env', 'REGISTRY') }}"
-registry_user: "{{ lookup('env', 'REGISTRY_USER') }}"
-registry_password: "{{ lookup('env', 'REGISTRY_PASSWORD') }}"

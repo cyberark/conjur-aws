@@ -1,3 +1,0 @@
----
-conjur_image: "{{ lookup('env', 'CONJUR_IMAGE') }}"
-conjur_tarball: "{{ lookup('env', 'CONJUR_TARBALL') }}"

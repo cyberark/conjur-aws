@@ -15,10 +15,7 @@
     privileged: no
     env:
       CONJUR_IMAGE: "{{conjur_image}}"
-      REGISTRY: "{{registry}}"
-      REGISTRY_USER: "{{registry_user}}"
-      REGISTRY_PASSWORD: "{{registry_password}}"
-
+      CONJUR_VERSION: "{{conjur_version}}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - "{{ ansible_env.HOME }}/load-conjur.sh:/load-conjur.sh"
@@ -27,7 +24,7 @@
   docker_image:
     name: conjurinc/cli5
     state: present
- 
+
 - name: Remove DinD
   docker_image:
     name: docker:dind
@@ -35,7 +32,7 @@
 
 - name: Configure service
   become: true
-  block: 
+  block:
     - file:
         path: /opt/conjur/bin
         state: directory

@@ -1,0 +1,2 @@
+conjur_image: "quay.io/cyberark/conjur"
+conjur_version: "latest"

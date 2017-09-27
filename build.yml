@@ -21,17 +21,17 @@
     - include: wait_for_ssh.yml ssh_host="{{ item.public_ip }}"
       static: no
       with_items: "{{ ec2.instances }}"
-      
+
 - name: Prepare instance with ansible
   hosts: coreos
   gather_facts: no
-    
+
   roles:
     - defunctzombie.coreos-bootstrap
 
   tasks:
     - name: install docker-py
-      pip: 
+      pip:
         name: docker-py
         executable: /home/core/bin/pip
 
@@ -44,7 +44,7 @@
   hosts: coreos
   vars:
     terminate_after_create: true
-    ami_name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
+    ami_name: "cyberark-conjur-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
     - ec2_facts:
 
@@ -57,8 +57,11 @@
         wait: yes
         name: "{{ ami_name }}"
         tags:
-          Name: "Conjur CE {{ conjur_version }}"
+          Name: "cyberark-conjur"
           Version: "{{ conjur_version }}"
+          Created: "{{ ansible_date_time.epoch }}"
+        launch_permissions:
+          group_names: ['all']
       register: ami
 
     - name: write AMI id
