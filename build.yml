@@ -60,6 +60,8 @@
           Name: "cyberark-conjur-ce"
           Version: "{{ conjur_version }}"
           Created: "{{ ansible_date_time.epoch }}"
+        launch_permissions:
+          group_names: ['all']
       register: ami
 
     - name: write AMI id
