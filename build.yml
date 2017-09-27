@@ -44,7 +44,7 @@
   hosts: coreos
   vars:
     terminate_after_create: true
-    ami_name: "conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
+    ami_name: "cyberark-conjur-ce-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
     - ec2_facts:
 
@@ -57,8 +57,9 @@
         wait: yes
         name: "{{ ami_name }}"
         tags:
-          Name: "conjur-ce-{{ conjur_version }}"
+          Name: "cyberark-conjur-ce"
           Version: "{{ conjur_version }}"
+          Created: "{{ ansible_date_time.epoch }}"
       register: ami
 
     - name: write AMI id
