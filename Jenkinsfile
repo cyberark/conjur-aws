@@ -43,7 +43,7 @@ pipeline {
 
     stage('Promote AMI to other regions') {
       when { allOf {
-        branch: 'master'
+        branch 'master'
         expression { return params.PROMOTE_TO_REGIONS }
       }}
       steps {
