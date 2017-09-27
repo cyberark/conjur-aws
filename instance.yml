@@ -10,13 +10,13 @@
          instance_ids: "{{ instance_id  | default(omit) }}"
          state: "{{ instance_state }}"
          instance_type: m4.large
-         image: ami-430b1a55
+         image: ami-e2d33d98  # coreos 1548.0.0, HVM, us-east-1
          assign_public_ip: yes
          vpc_subnet_id: subnet-a9c7b484
          wait: yes
          instance_tags:
-           Name: Conjur CE
-           Description: Used as the basis for the Conjur CE AMI
+           Name: cyberark-conjur-ce-base
+           Description: Base instance for cyberark-conjur-ce AMI
            Version: "{{ lookup('env', 'CONJUR_VERSION') }}"
 
       register: ec2
