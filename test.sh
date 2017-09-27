@@ -9,5 +9,5 @@ finish() {
   ./ansible.sh ansible-playbook -e stack_name=${STACK_NAME} -e stack_state=absent -vvv stack.yml
 }
 trap finish EXIT
-  
+
 ./ansible.sh ${@-ansible-playbook -e stack_name=${STACK_NAME} -vvv test.yml}

@@ -13,16 +13,19 @@ pipeline {
     AMI_ID_FILE = "AMI.txt"
   }
 
+  parameters {
+    string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI')
+    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: false, description: 'Promote AMI across regions')
+  }
+
   stages {
     stage('Build the Conjur CE AMI') {
       steps {
-        sh "summon ./build.sh"
+        sh "summon ./build.sh ${params.CONJUR_VERSION}"
         archiveArtifacts "*.txt"
 
         milestone(1)  // AMI is now built
       }
-
-
     }
 
     stage('Fetch and update the CFT') {
@@ -38,11 +41,20 @@ pipeline {
       }
     }
 
+    stage('Promote AMI to other regions') {
+      when { allOf {
+        branch: 'master'
+        expression { return params.PROMOTE_TO_REGIONS }
+      }}
+      steps {
+        sh "./promote-to-regions.sh $(cat AMI.txt)"
+        archive "AMIS.json"
+      }
+    }
+
     stage('Publish CFT') {
       when {
-        anyOf {
-          branch 'master'
-        }
+        branch 'master'
       }
       steps {
         sh 'summon ./publish-cft.sh'

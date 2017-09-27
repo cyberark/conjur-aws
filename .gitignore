@@ -2,3 +2,5 @@ AMI.txt
 EC2.txt
 conjur-ce.yml
 *.retry
+output/*
+AMIS.json
