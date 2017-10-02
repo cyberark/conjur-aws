@@ -1,0 +1,14 @@
+---
+
+- name: Render CloudFormation template
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    amis_by_region:
+      us-east-1: "{{ us-east_1_ami }}"
+  tasks:
+    - name: Insert AMI IDs into template
+      template:
+        src: /ansible/templates/cfn/conjur.yml.j2
+        dest: /ansible/conjur.yml
