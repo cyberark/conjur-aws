@@ -7,7 +7,8 @@
   tasks:
     - name: Grab AMIs from vars-amis.yml
       include_vars:
-        amis_by_region: vars-amis.yml
+        file: vars-amis.yml
+        name: amis_by_region
     - name: Insert AMI IDs into template
       template:
         src: /ansible/templates/cfn/conjur.yml.j2
