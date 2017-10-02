@@ -93,7 +93,7 @@ Resources:
   ConjurInstance:
     Type: "AWS::EC2::Instance"
     Properties:
-      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 64]
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "64"]
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref ConjurSecurityGroup]
