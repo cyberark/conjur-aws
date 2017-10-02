@@ -67,6 +67,9 @@
     - name: write AMI id
       local_action: copy content="{{ ami.image_id}}" dest="/ansible/{{ ami_id_filename }}"
 
+    - name: write AMI id, again
+      local_action: copy content="us-east-1: {{ ami.image_id}}" dest="/ansible/vars-amis.yml"
+
     - name: terminate instance
       connection: local
       vars:

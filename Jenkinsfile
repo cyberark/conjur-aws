@@ -22,15 +22,16 @@ pipeline {
     stage('Build the Conjur CE AMI') {
       steps {
         sh "summon ./build.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts "*.txt"
+        archiveArtifacts "*.txt,vars-amis.yml"
 
         milestone(1)  // AMI is now built
       }
     }
 
-    stage('Fetch and update the CFT') {
+    stage('Render CFN template for testing') {
       steps {
-        sh './fetch-cft.sh'
+        sh './render-cft.sh'
+        archiveArtifacts 'conjur.yml'  // CFN stack file
       }
     }
 
