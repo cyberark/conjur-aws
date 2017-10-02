@@ -60,7 +60,7 @@ Mappings:
   RegionMap:
   {% for region, ami_id in amis_by_region.items() %}
   {{ region }}:
-        "64": "{{ ami_id }}"
+      "64": "{{ ami_id }}"
   {% endfor %}
 
 Resources:
