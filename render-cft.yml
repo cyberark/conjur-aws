@@ -4,9 +4,6 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    amis_by_region:
-      us-east-1: "{{ us-east_1_ami }}"
   tasks:
     - name: Insert AMI IDs into template
       template:
