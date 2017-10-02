@@ -21,10 +21,6 @@ Parameters:
     NoEcho: true
     Description: RDS instance admin password
 
-  ImageId:
-    Type: AWS::EC2::Image::Id
-    Description: Conjur AMI
-
   InstanceType:
     Type: String
     Description: Type of Conjur EC2 instance
@@ -61,9 +57,10 @@ Metadata:
           - VpcSubnetIds
 
 Mappings:
-  RegionAMIMap:
+  RegionMap:
   {% for region, ami_id in amis_by_region.items() %}
-    {{ region }}: "{{ ami_id }}"
+    {{ region }}:
+      "64": "{{ ami_id }}"
   {% endfor %}
 
 Resources:
@@ -96,7 +93,7 @@ Resources:
   ConjurInstance:
     Type: "AWS::EC2::Instance"
     Properties:
-      ImageId: !Ref ImageId
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", 64]
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref ConjurSecurityGroup]
