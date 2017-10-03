@@ -2,4 +2,6 @@ AMI.txt
 EC2.txt
 *.retry
 output/*
-AMIS.json
+amis.json
+ami-vars.yml
+conjur.yml

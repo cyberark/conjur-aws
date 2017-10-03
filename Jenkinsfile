@@ -49,7 +49,9 @@ pipeline {
       }}
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
-        archive "AMIS.json"
+
+        sh './render-cft.sh'  // re-render here to pick up all AMIs
+        archiveArtifacts 'vars-amis.yml,conjur.yml'
       }
     }
 
