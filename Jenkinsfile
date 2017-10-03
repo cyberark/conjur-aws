@@ -42,6 +42,12 @@ pipeline {
       }
     }
 
+    stage('Fix permissions') {
+      steps {
+        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mounts create unreadable files TODO fix this
+      }
+    }
+
     stage('Promote AMI to other regions') {
       when { allOf {
         branch 'master'
