@@ -22,8 +22,14 @@ docker pull $PROMOTER_IMAGE
 summon docker run --rm --env-file @SUMMONENVFILE $PROMOTER_IMAGE \
   --ami $SOURCE_AMI \
   --regions "$regions_string" \
-  | tee AMIS.json
+  | tee amis.json
 
-# Add the source AMI to the list so it is complete
-source_ami_string="{\"us-east-1\": \"$SOURCE_AMI\","
-sed "1s/^./$source_ami_string /" AMIS.json
+# Convert ami-promoter output to YML, for easier merging
+docker run --rm \
+  -v $PWD:/src -w /src \
+  ruby:2.3 \
+  ruby -ryaml -rjson -e 'puts YAML.dump(JSON.parse(STDIN.read))' < amis.json > vars-amis.yml
+
+# Add the us-east-1 AMI to the vars file so CFN template rendering can pick them up
+source_ami_string="us-east-1: $SOURCE_AMI"
+sed "1s/---/$source_ami_string/" vars-amis.yml | tee vars-amis.yml

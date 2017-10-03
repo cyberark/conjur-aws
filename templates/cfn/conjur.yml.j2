@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Conjur CE Stack, backed by a PostgreSQL database on RDS
+Description: Conjur Stack, backed by a PostgreSQL database on RDS
 
 Parameters:
   ConjurAccount:
@@ -21,45 +21,47 @@ Parameters:
     NoEcho: true
     Description: RDS instance admin password
 
-  ImageId:
-    Type: AWS::EC2::Image::Id
-    Description: Conjur CE AMI
-
   InstanceType:
     Type: String
-    Description: Type of Conjur CE EC2 instance
-    Default: t2.medium
+    Description: Type of Conjur EC2 instance
+    Default: m4.large
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
     Description: AWS keypair to use
 
   VpcId:
-    Type: AWS::EC2::VPC::Id 
+    Type: AWS::EC2::VPC::Id
     Description: VPC in which to launch Conjur instances
 
   VpcSubnetIds:
     Type: "List<AWS::EC2::Subnet::Id>"
     Description: Subnets in which to launch Conjur and Postgres. Specify two, in different Availability Zones.
 
-
 Metadata:
-  AWS::CloudFormation::Interface: 
-    ParameterGroups: 
-      - Label: 
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
           default: "Conjur Configuration"
         Parameters:
           - ConjurAccount
           - ConjurAdminPassword
           - DBAdminUser
           - DBAdminPassword
-      - Label: 
+      - Label:
           default: "EC2 Instance Configuration"
         Parameters:
           - ImageId
           - KeyName
           - VpcId
           - VpcSubnetIds
+
+Mappings:
+  RegionMap:
+  {% for region, ami_id in amis_by_region.items() %}
+  {{ region }}:
+      "64": "{{ ami_id }}"
+  {% endfor %}
 
 Resources:
   ConjurSecurityGroup:
@@ -90,8 +92,8 @@ Resources:
 
   ConjurInstance:
     Type: "AWS::EC2::Instance"
-    Properties: 
-      ImageId: !Ref ImageId
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "64"]
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref ConjurSecurityGroup]
@@ -104,7 +106,7 @@ Resources:
 
           set -x
           # Only initialize once
-          if grep -q CONJUR_DATA_KEY /etc/default/conjur; then 
+          if grep -q CONJUR_DATA_KEY /etc/default/conjur; then
             exit 0;
           fi
 
@@ -141,6 +143,6 @@ Resources:
       SubnetIds: !Ref VpcSubnetIds
 
 Outputs:
-  ConjurAddress: 
-    Description: public IP address of Conjur CE instance
+  ConjurAddress:
+    Description: public IP address of Conjur instance
     Value: !GetAtt ConjurInstance.PublicIp

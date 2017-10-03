@@ -1,5 +1,5 @@
 ---
-- name: Manage Conjur CE stack
+- name: Manage Conjur stack
 
   hosts: localhost
   connection: local
