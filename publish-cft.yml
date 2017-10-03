@@ -9,6 +9,6 @@
     - name: write template to S3
       s3:
         bucket: "{{ bucket }}"
-        object: "conjur-{{ conjur_version }}.yml"
+        object: "cloudformation/conjur-{{ conjur_version }}.yml"
         src: "/ansible/conjur-{{ conjur_version }}.yml"
         mode: put
