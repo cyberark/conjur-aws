@@ -30,8 +30,8 @@ pipeline {
 
     stage('Render CFN template for testing') {
       steps {
-        sh './render-cft.sh'
-        archiveArtifacts 'conjur.yml'  // CFN stack file
+        sh './render-cft.sh ${params.CONJUR_VERSION}'
+        archiveArtifacts 'conjur*.yml'  // CFN stack files
       }
     }
 
@@ -50,8 +50,8 @@ pipeline {
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
 
-        sh './render-cft.sh'  // re-render here to pick up all AMIs
-        archiveArtifacts 'vars-amis.yml,conjur.yml'
+        sh './render-cft.sh ${params.CONJUR_VERSION}'  // re-render here to pick up all AMIs
+        archiveArtifacts 'vars-amis.yml,conjur*.yml'
       }
     }
 
@@ -60,7 +60,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh 'summon ./publish-cft.sh'
+        sh 'summon ./publish-cft.sh ${params.CONJUR_VERSION}'
       }
     }
   }

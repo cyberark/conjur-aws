@@ -5,11 +5,10 @@
   gather_facts: no
   vars:
     bucket: "conjur-ci-public"
-
   tasks:
     - name: write template to S3
       s3:
         bucket: "{{ bucket }}"
-        object: conjur-latest.yml
-        src: /ansible/conjur.yml
+        object: "conjur-{{ conjur_version }}.yml"
+        src: "/ansible/conjur-{{ conjur_version }}.yml"
         mode: put

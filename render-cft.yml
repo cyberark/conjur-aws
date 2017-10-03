@@ -12,4 +12,7 @@
     - name: Insert AMI IDs into template
       template:
         src: /ansible/templates/cfn/conjur.yml.j2
-        dest: /ansible/conjur.yml
+        dest: "{{ item }}"
+      with_items:
+        - /ansible/conjur.yml
+        - "/ansible/conjur-{{ conjur_version}}.yml"

@@ -1,7 +1,5 @@
 #!/bin/bash -eux
 
-set -a
+CONJUR_VERSION="${1:-latest}"
 
-AMI_ID=$(< "${AMI_ID_FILE}")
-
-./ansible.sh ${@-ansible-playbook -vv publish-cft.yml}
+./ansible.sh ansible-playbook -v -e conjur_version="$CONJUR_VERSION" publish-cft.yml
