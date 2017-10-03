@@ -25,9 +25,7 @@ summon docker run --rm --env-file @SUMMONENVFILE $PROMOTER_IMAGE \
   | tee amis.json
 
 # Convert ami-promoter output to YML, for easier merging
-docker run --rm \
-  -v $PWD:/src -w /src \
-  ruby:2.3 \
+docker run --rm -i ruby:2.3 \
   ruby -ryaml -rjson -e 'puts YAML.dump(JSON.parse(STDIN.read))' < amis.json > vars-amis.yml
 
 # Add the us-east-1 AMI to the vars file so CFN template rendering can pick them up

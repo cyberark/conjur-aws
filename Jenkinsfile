@@ -57,7 +57,7 @@ pipeline {
         sh './promote-to-regions.sh $(cat AMI.txt)'
 
         sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-        archiveArtifacts 'vars-amis.yml,conjur*.yml'
+        archiveArtifacts 'vars-amis.yml,conjur*.yml,amis.json'
       }
     }
 
