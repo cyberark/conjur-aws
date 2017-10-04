@@ -22,7 +22,7 @@ pipeline {
     stage('Build the Conjur AMI') {
       steps {
         sh "summon ./build.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts "*.txt,vars*"
+        archiveArtifacts "*.txt"
 
         milestone(1)  // AMI is now built
       }
