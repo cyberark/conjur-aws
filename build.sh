@@ -26,4 +26,4 @@ echo 'ami-48926832' > $AMI_ID_FILE
 
 ami_id=$(< "${AMI_ID_FILE}")
 
-echo "{\"us-east-1\": \"$ami_id\"}" > vars-amis.json
+echo "{\"us-east-1\": \"$ami_id\"}" > vars-amis_by_region.json
