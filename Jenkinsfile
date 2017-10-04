@@ -19,21 +19,21 @@ pipeline {
   }
 
   stages {
-    // stage('Build the Conjur CE AMI') {
-    //   steps {
-    //     sh "summon ./build.sh ${params.CONJUR_VERSION}"
-    //     archiveArtifacts "*.txt,vars-amis.*"
+    stage('Build the Conjur CE AMI') {
+      steps {
+        sh "summon ./build.sh ${params.CONJUR_VERSION}"
+        archiveArtifacts "*.txt,vars-amis.*"
 
-    //     milestone(1)  // AMI is now built
-    //   }
-    // }
+        milestone(1)  // AMI is now built
+      }
+    }
 
-    // stage('Render CFN template for testing') {
-    //   steps {
-    //     sh "./render-cft.sh ${params.CONJUR_VERSION}"
-    //     archiveArtifacts 'conjur*.yml'  // CFN stack files
-    //   }
-    // }
+    stage('Render CFN template for testing') {
+      steps {
+        sh "./render-cft.sh ${params.CONJUR_VERSION}"
+        archiveArtifacts 'conjur*.yml'  // CFN stack files
+      }
+    }
 
     // stage('Test the AMI') {
     //   steps {
@@ -41,15 +41,6 @@ pipeline {
     //     milestone(2)  // AMI has been tested
     //   }
     // }
-
-    stage('Use prebuilt AMI, debug') {
-      steps {
-        sh 'echo "ami-48926832" > AMI.txt'
-        archiveArtifacts "*.txt,vars-amis.*"
-
-        milestone(1)  // AMI is now built
-      }
-    }
 
     stage('Promote AMI to other regions') {
       // when { allOf {

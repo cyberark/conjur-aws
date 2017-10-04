@@ -5,7 +5,7 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: Grab AMIs from vars-amis.yml
+    - name: Grab AMIs from vars-amis.json
       include_vars:
         file: vars-amis.json
         name: amis_by_region
