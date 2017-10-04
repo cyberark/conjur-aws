@@ -1,6 +1,6 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
-set -a
+exit 0  # TODO remove
 
 AMI_ID=$(< "${AMI_ID_FILE}")
 : ${STACK_NAME=conjur-ami-test-$(date +%s)}

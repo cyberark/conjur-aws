@@ -19,7 +19,7 @@ pipeline {
   }
 
   stages {
-    stage('Build the Conjur CE AMI') {
+    stage('Build the Conjur AMI') {
       steps {
         sh "summon ./build.sh ${params.CONJUR_VERSION}"
         archiveArtifacts "*.txt,vars-amis.*"
@@ -35,12 +35,12 @@ pipeline {
       }
     }
 
-    // stage('Test the AMI') {
-    //   steps {
-    //     sh "summon ./test.sh"
-    //     milestone(2)  // AMI has been tested
-    //   }
-    // }
+    stage('Test the CFN template') {
+      steps {
+        sh "summon ./test.sh"
+        milestone(2)  // AMI has been tested
+      }
+    }
 
     stage('Promote AMI to other regions') {
       // when { allOf {
