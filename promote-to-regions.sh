@@ -18,7 +18,7 @@ REGIONS=(
 
 regions_string=$(IFS=, ; echo "${REGIONS[*]}")  # comma-delimited, for ami-promoter
 
-cat <<'EOF' >> vars-amis.json
+cat <<'EOF' >> vars-amis_by_region.json
 {
   "us-east-2": "ami-34fcd151",
   "us-west-1": "ami-499cac29",
@@ -37,4 +37,4 @@ EOF
 # summon docker run --rm --env-file @SUMMONENVFILE $PROMOTER_IMAGE \
 #   --ami $SOURCE_AMI \
 #   --regions "$regions_string" \
-#   | tee vars-amis.json
+#   | tee vars-amis_by_region.json
