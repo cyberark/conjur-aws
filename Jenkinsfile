@@ -19,54 +19,59 @@ pipeline {
   }
 
   stages {
-    stage('Build the Conjur CE AMI') {
+    // stage('Build the Conjur CE AMI') {
+    //   steps {
+    //     sh "summon ./build.sh ${params.CONJUR_VERSION}"
+    //     archiveArtifacts "*.txt,vars-amis.*"
+
+    //     milestone(1)  // AMI is now built
+    //   }
+    // }
+
+    // stage('Render CFN template for testing') {
+    //   steps {
+    //     sh "./render-cft.sh ${params.CONJUR_VERSION}"
+    //     archiveArtifacts 'conjur*.yml'  // CFN stack files
+    //   }
+    // }
+
+    // stage('Test the AMI') {
+    //   steps {
+    //     sh "summon ./test.sh"
+    //     milestone(2)  // AMI has been tested
+    //   }
+    // }
+
+    stage('Use prebuilt AMI, debug') {
       steps {
-        sh "summon ./build.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts "*.txt,vars-amis.yml"
+        sh 'echo "ami-48926832" > AMI.txt'
+        archiveArtifacts "*.txt,vars-amis.*"
 
         milestone(1)  // AMI is now built
       }
     }
 
-    stage('Render CFN template for testing') {
-      steps {
-        sh "./render-cft.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts 'conjur*.yml'  // CFN stack files
-      }
-    }
-
-    stage('Test the AMI') {
-      steps {
-        sh "summon ./test.sh"
-        milestone(2)  // AMI has been tested
-      }
-    }
-
-    stage('Fix permissions') {
-      steps {
-        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mounts create unreadable files TODO fix this
-      }
-    }
-
     stage('Promote AMI to other regions') {
-      when { allOf {
-        branch 'master'
-        expression { return params.PROMOTE_TO_REGIONS }
-      }}
+      // when { allOf {
+      //   branch 'master'
+      //   expression { return params.PROMOTE_TO_REGIONS }
+      // }}
       steps {
-        sh './promote-to-regions.sh $(cat AMI.txt)'
+        echo 'todo'
+        // sh './promote-to-regions.sh $(cat AMI.txt)'
 
-        sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-        archiveArtifacts 'vars-amis.yml,conjur*.yml,amis.json'
+        // sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
+        // archiveArtifacts 'conjur*.yml,vars-amis.*'
       }
     }
 
     stage('Publish CFT') {
-      when {
-        branch 'master'
-      }
+      // when {
+      //   branch 'master'
+      // }
       steps {
-        sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
+        echo 'todo'
+        // sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
       }
     }
   }

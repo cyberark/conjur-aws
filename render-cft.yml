@@ -7,7 +7,7 @@
   tasks:
     - name: Grab AMIs from vars-amis.yml
       include_vars:
-        file: vars-amis.yml
+        file: vars-amis.json
         name: amis_by_region
     - name: Insert AMI IDs into template
       template:
