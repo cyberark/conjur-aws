@@ -15,14 +15,14 @@ pipeline {
 
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI')
-    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: false, description: 'Promote AMI across regions')
+    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: True, description: 'Promote AMI across regions')
   }
 
   stages {
     stage('Build the Conjur AMI') {
       steps {
         sh "summon ./build.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts "*.txt,vars-amis.*"
+        archiveArtifacts "*.txt,vars*"
 
         milestone(1)  // AMI is now built
       }
@@ -43,16 +43,16 @@ pipeline {
     }
 
     stage('Promote AMI to other regions') {
-      // when { allOf {
-      //   branch 'master'
-      //   expression { return params.PROMOTE_TO_REGIONS }
-      // }}
+      when { allOf {
+        // branch 'master'
+        expression { return params.PROMOTE_TO_REGIONS }
+      }}
       steps {
         echo 'todo'
         sh './promote-to-regions.sh $(cat AMI.txt)'
 
         sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-        archiveArtifacts 'conjur*.yml,vars-amis.*'
+        archiveArtifacts 'conjur*.yml,vars*'
       }
     }
 
