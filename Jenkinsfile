@@ -15,7 +15,7 @@ pipeline {
 
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI')
-    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: True, description: 'Promote AMI across regions')
+    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: true, description: 'Promote AMI across regions')
   }
 
   stages {
