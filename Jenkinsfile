@@ -49,10 +49,10 @@ pipeline {
       // }}
       steps {
         echo 'todo'
-        // sh './promote-to-regions.sh $(cat AMI.txt)'
+        sh './promote-to-regions.sh $(cat AMI.txt)'
 
-        // sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-        // archiveArtifacts 'conjur*.yml,vars-amis.*'
+        sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
+        archiveArtifacts 'conjur*.yml,vars-amis.*'
       }
     }
 
