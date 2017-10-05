@@ -1,5 +1,5 @@
 #!/bin/bash -eux
-# Render newly created AMI into CloudFormation template, for testing
+# Render newly created AMI(s) into CloudFormation template
 
 CONJUR_VERSION="${1:-latest}"
 
