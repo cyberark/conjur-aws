@@ -24,4 +24,5 @@ mkdir -p vars  # variables passed between plays are stored here
 #   -e conjur_version="$CONJUR_VERSION" \
 #   build-ami.yml
 
+echo 'ami-964285ec' > AMI.txt
 echo 'us-east-1: ami-964285ec' > vars/us-east-1.yml
