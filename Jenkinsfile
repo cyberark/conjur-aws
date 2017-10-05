@@ -15,7 +15,6 @@ pipeline {
 
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI')
-    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: false, description: 'Promote AMI across regions')
   }
 
   stages {
@@ -43,10 +42,9 @@ pipeline {
     }
 
     stage('Promote AMI to other regions') {
-      when { allOf {
+      when {
         branch 'master'
-        expression { return params.PROMOTE_TO_REGIONS }
-      }}
+      }
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
         archiveArtifacts 'vars/*'
