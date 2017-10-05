@@ -21,6 +21,11 @@ Parameters:
     NoEcho: true
     Description: RDS instance admin password
 
+  DBDeletionPolicy:
+    Type: String
+    Default: Snapshot
+    Description: RDS instance deletion policy
+    
   InstanceType:
     Type: String
     Description: Type of Conjur EC2 instance
@@ -48,6 +53,7 @@ Metadata:
           - ConjurAdminPassword
           - DBAdminUser
           - DBAdminPassword
+          - DBDeletionPolicy
       - Label:
           default: "EC2 Instance Configuration"
         Parameters:

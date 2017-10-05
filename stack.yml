@@ -18,6 +18,7 @@
           ConjurAccount: test
           ConjurAdminPassword: secret
           DBAdminPassword: secretdbpassword
+          DBDeletionPolicy: Delete
           VpcId: vpc-36803e50
           VpcSubnetIds: "subnet-a9c7b484,subnet-f10c2cb8"
       register: stack
