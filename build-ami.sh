@@ -6,23 +6,20 @@ CONJUR_VERSION="${1:-latest}"
 : ${INSTANCE_ID_FILE=dev-EC2.txt}
 : ${AMI_ID_FILE=dev-AMI.txt}
 
-# finish() {
-#   if [ -f "${INSTANCE_ID_FILE}" ]; then
-#     ./ansible.sh ansible-playbook -v \
-#       -e instance_id="$(< ${INSTANCE_ID_FILE})" \
-#       -e instance_state=absent \
-#       instance.yml
-#   fi
-# }
-# trap finish EXIT
+finish() {
+  if [ -f "${INSTANCE_ID_FILE}" ]; then
+    ./ansible.sh ansible-playbook -v \
+      -e instance_id="$(< ${INSTANCE_ID_FILE})" \
+      -e instance_state=absent \
+      instance.yml
+  fi
+}
+trap finish EXIT
 
 mkdir -p vars  # variables passed between plays are stored here
 
-# ./ansible.sh ansible-playbook -v \
-#   -e ami_id_filename="${AMI_ID_FILE}" \
-#   -e instance_id_filename="${INSTANCE_ID_FILE}" \
-#   -e conjur_version="$CONJUR_VERSION" \
-#   build-ami.yml
-
-echo 'ami-964285ec' > AMI.txt
-echo 'us-east-1: ami-964285ec' > vars/us-east-1.yml
+./ansible.sh ansible-playbook -v \
+  -e ami_id_filename="${AMI_ID_FILE}" \
+  -e instance_id_filename="${INSTANCE_ID_FILE}" \
+  -e conjur_version="$CONJUR_VERSION" \
+  build-ami.yml

@@ -35,18 +35,18 @@ pipeline {
       }
     }
 
-    // stage('Test the CFN template') {
-    //   steps {
-    //     sh "summon ./test.sh"
-    //     milestone(2)  // AMI has been tested
-    //   }
-    // }
+    stage('Test the CFN template') {
+      steps {
+        sh "summon ./test.sh"
+        milestone(2)  // AMI has been tested
+      }
+    }
 
     stage('Promote AMI to other regions') {
-      when { allOf {
-        // branch 'master'
-        expression { return params.PROMOTE_TO_REGIONS }
-      }}
+      // when { allOf {
+      //   branch 'master'
+      //   expression { return params.PROMOTE_TO_REGIONS }
+      // }}
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
         archiveArtifacts 'vars/*'
@@ -56,15 +56,14 @@ pipeline {
       }
     }
 
-    // stage('Publish CFT') {
-    //   // when {
-    //   //   branch 'master'
-    //   // }
-    //   steps {
-    //     echo 'todo'
-    //     // sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
-    //   }
-    // }
+    stage('Publish CFT') {
+      // when {
+      //   branch 'master'
+      // }
+      steps {
+        sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
+      }
+    }
   }
 
   post {
