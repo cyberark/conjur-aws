@@ -16,6 +16,8 @@ finish() {
 }
 trap finish EXIT
 
+mkdir -p vars  # variables passed between plays are stored here
+
 ./ansible.sh ansible-playbook -v \
   -e ami_id_filename="${AMI_ID_FILE}" \
   -e instance_id_filename="${INSTANCE_ID_FILE}" \
