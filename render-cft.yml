@@ -8,7 +8,7 @@
     - name: Grab AMIs from vars-amis_by_region.json
       include_vars:
         dir: 'vars'
-        extensions: ['yml']
+        extensions: ['yml', 'json']
         name: amis_by_region
 
     - name: Insert AMI IDs into template

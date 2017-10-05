@@ -42,19 +42,18 @@ pipeline {
     //   }
     // }
 
-    // stage('Promote AMI to other regions') {
-    //   when { allOf {
-    //     // branch 'master'
-    //     expression { return params.PROMOTE_TO_REGIONS }
-    //   }}
-    //   steps {
-    //     echo 'todo'
-    //     sh './promote-to-regions.sh $(cat AMI.txt)'
+    stage('Promote AMI to other regions') {
+      when { allOf {
+        // branch 'master'
+        expression { return params.PROMOTE_TO_REGIONS }
+      }}
+      steps {
+        sh './promote-to-regions.sh $(cat AMI.txt)'
 
-    //     sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-    //     archiveArtifacts 'conjur*.yml,vars*'
-    //   }
-    // }
+        sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
+        archiveArtifacts 'conjur*.yml,vars/*'
+      }
+    }
 
     // stage('Publish CFT') {
     //   // when {
