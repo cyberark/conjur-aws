@@ -5,7 +5,7 @@ pipeline {
 
   options {
     timestamps()
-    buildDiscarder(logRotator(numToKeepStr: '30'))
+    buildDiscarder(logRotator(daysToKeepStr: '30'))
   }
 
   environment {
@@ -15,7 +15,7 @@ pipeline {
 
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI')
-    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: true, description: 'Promote AMI across regions')
+    booleanParam(name: 'PROMOTE_TO_REGIONS', defaultValue: false, description: 'Promote AMI across regions')
   }
 
   stages {
@@ -43,10 +43,10 @@ pipeline {
     }
 
     stage('Promote AMI to other regions') {
-      // when { allOf {
-      //   branch 'master'
-      //   expression { return params.PROMOTE_TO_REGIONS }
-      // }}
+      when { allOf {
+        branch 'master'
+        expression { return params.PROMOTE_TO_REGIONS }
+      }}
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
         archiveArtifacts 'vars/*'
@@ -57,9 +57,9 @@ pipeline {
     }
 
     stage('Publish CFT') {
-      // when {
-      //   branch 'master'
-      // }
+      when {
+        branch 'master'
+      }
       steps {
         sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
       }
