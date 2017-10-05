@@ -5,3 +5,4 @@ output/*
 amis.json
 ami-vars.yml
 conjur.yml
+vars/

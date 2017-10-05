@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 CONJUR_VERSION="${1:-latest}"
 # Default these variables to make development easier. They should be get in the environment (i.e. in the Jenkinsfile)
@@ -16,8 +16,10 @@ finish() {
 }
 trap finish EXIT
 
+mkdir -p vars  # variables passed between plays are stored here
+
 ./ansible.sh ansible-playbook -v \
   -e ami_id_filename="${AMI_ID_FILE}" \
   -e instance_id_filename="${INSTANCE_ID_FILE}" \
   -e conjur_version="$CONJUR_VERSION" \
-  build.yml
+  build-ami.yml

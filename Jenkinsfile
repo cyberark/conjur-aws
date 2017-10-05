@@ -5,7 +5,7 @@ pipeline {
 
   options {
     timestamps()
-    buildDiscarder(logRotator(numToKeepStr: '30'))
+    buildDiscarder(logRotator(daysToKeepStr: '30'))
   }
 
   environment {
@@ -19,10 +19,10 @@ pipeline {
   }
 
   stages {
-    stage('Build the Conjur CE AMI') {
+    stage('Build the Conjur AMI') {
       steps {
-        sh "summon ./build.sh ${params.CONJUR_VERSION}"
-        archiveArtifacts "*.txt,vars-amis.yml"
+        sh "summon ./build-ami.sh ${params.CONJUR_VERSION}"
+        archiveArtifacts "*.txt,vars/*.yml"
 
         milestone(1)  // AMI is now built
       }
@@ -35,16 +35,10 @@ pipeline {
       }
     }
 
-    stage('Test the AMI') {
+    stage('Test the CFN template') {
       steps {
         sh "summon ./test.sh"
         milestone(2)  // AMI has been tested
-      }
-    }
-
-    stage('Fix permissions') {
-      steps {
-        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mounts create unreadable files TODO fix this
       }
     }
 
@@ -55,9 +49,10 @@ pipeline {
       }}
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
+        archiveArtifacts 'vars/*'
 
         sh "./render-cft.sh ${params.CONJUR_VERSION}"  // re-render here to pick up all AMIs
-        archiveArtifacts 'vars-amis.yml,conjur*.yml,amis.json'
+        archiveArtifacts 'conjur*.yml'
       }
     }
 

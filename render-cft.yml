@@ -5,10 +5,12 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: Grab AMIs from vars-amis.yml
+    - name: Grab AMIs from vars-amis_by_region.json
       include_vars:
-        file: vars-amis.yml
+        dir: 'vars'
+        extensions: ['yml', 'json']
         name: amis_by_region
+
     - name: Insert AMI IDs into template
       template:
         src: /ansible/templates/cfn/conjur.yml.j2

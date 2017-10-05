@@ -1,6 +1,4 @@
-#!/bin/bash -eux
-
-set -a
+#!/bin/bash -eu
 
 AMI_ID=$(< "${AMI_ID_FILE}")
 : ${STACK_NAME=conjur-ami-test-$(date +%s)}
