@@ -131,6 +131,7 @@ Resources:
 
   RDSInstance:
     Type: "AWS::RDS::DBInstance"
+    DeletionPolicy: Delete
     Properties:
       Engine: postgres
       EngineVersion: 9.3.17
