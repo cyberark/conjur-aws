@@ -48,6 +48,9 @@
   tasks:
     - ec2_facts:
 
+    - name: Remove all authorized keys
+      shell: rm -rf /home/core/.ssh/authorized_key*
+
     - name: AMI creation
       connection: local
       vars:
