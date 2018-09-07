@@ -49,7 +49,9 @@
     - ec2_facts:
 
     - name: Remove all authorized keys
-      shell: rm -rf /home/core/.ssh/authorized_key*
+      shell: rm -vrf /home/core/.ssh/authorized_key*
+      args:
+        warn=false # file module doesn't support wildcards
 
     - name: AMI creation
       connection: local
