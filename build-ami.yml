@@ -51,7 +51,7 @@
     - name: Remove all authorized keys
       shell: rm -vrf /home/core/.ssh/authorized_key*
       args:
-        warn=false # file module doesn't support wildcards
+        warn: false # file module doesn't support wildcards
 
     - name: AMI creation
       connection: local
