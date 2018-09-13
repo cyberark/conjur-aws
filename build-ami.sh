@@ -21,7 +21,7 @@ trap finish EXIT
 mkdir -p vars  # variables passed between plays are stored here
 
 echo "Fetching latest CoreOS AMI..."
-BASE_AMI=$(docker run --rm --env-file ansible.env \
+export BASE_AMI=$(docker run --rm --env-file ansible.env \
   mesosphere/aws-cli ec2 describe-images --filters '[
     {"Name": "owner-id", "Values": ["595879546273"] },
     {"Name": "name", "Values": ["CoreOS-stable*"] },
@@ -44,5 +44,4 @@ echo "Starting build"
   -e ami_id_filename="${AMI_ID_FILE}" \
   -e instance_id_filename="${INSTANCE_ID_FILE}" \
   -e conjur_version="$CONJUR_VERSION" \
-  -e BASE_AMI="$BASE_AMI" \
   build-ami.yml
