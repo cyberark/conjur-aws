@@ -1,4 +1,6 @@
-#!/bin/bash -euo pipefail
+#!/bin/bash -eu
+
+set -o pipefail
 
 CONJUR_VERSION="${1:-latest}"
 # Default these variables to make development easier. They should be get in the environment (i.e. in the Jenkinsfile)
