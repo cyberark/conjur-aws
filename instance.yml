@@ -10,7 +10,7 @@
          instance_ids: "{{ instance_id  | default(omit) }}"
          state: "{{ instance_state }}"
          instance_type: m4.large
-         image: {{ lookup('env', 'BASE_AMI') }}
+         image: "{{ lookup('env', 'BASE_AMI') }}"
          assign_public_ip: yes
          vpc_subnet_id: subnet-a9c7b484
          wait: yes
