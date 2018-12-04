@@ -110,7 +110,6 @@ Resources:
 
           exec >>/var/log/conjur-init.log 2>&1
 
-          set -x
           # Only initialize once
           if grep -q CONJUR_DATA_KEY /etc/default/conjur; then
             exit 0;
