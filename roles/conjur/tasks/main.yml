@@ -1,4 +1,19 @@
 ---
+
+- name: Disable CoreOS Auto-updates
+  become: true
+  block:
+    - systemd:
+      name: "update-engine"
+      enabled: false
+      masked: true
+
+    - systemd:
+      name: "locksmithd"
+      enabled: false
+      masked: true
+      daemon_reload: true
+
 - name: Copy the image loading script
   copy:
     src: load-conjur.sh
