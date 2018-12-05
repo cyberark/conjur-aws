@@ -14,7 +14,7 @@ pipeline {
   }
 
   parameters {
-    string(name: 'CONJUR_VERSION', description: 'Version of Conjur to build into AMI (e.g. 5.x.x)')
+    string(name: 'CONJUR_VERSION', defaultValue: 'untagged', description: 'Version of Conjur to build into AMI (e.g. 5.x.x)')
   }
 
   stages {
