@@ -2,7 +2,7 @@
 
 set -o pipefail
 
-CONJUR_VERSION="${1:-untagged}"
+CONJUR_VERSION="${1:-latest}"
 # Default these variables to make development easier. They should be get in the environment (i.e. in the Jenkinsfile)
 # when this script gets used as part of a build.
 : ${INSTANCE_ID_FILE=dev-EC2.txt}
