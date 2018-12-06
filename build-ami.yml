@@ -18,9 +18,10 @@
         groupname: coreos
       with_items: "{{ ec2.instances }}"
 
-    - include: wait_for_ssh.yml ssh_host="{{ item.public_ip }}"
-      static: no
-      with_items: "{{ ec2.instances }}"
+    - name: Wait for instance
+      wait_for_connection:
+        sleep: 5
+        timeout: 300
 
 - name: Prepare instance with ansible
   hosts: coreos
