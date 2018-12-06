@@ -1,10 +1,10 @@
 ---
-- include: instance.yml instance_state=present
+- import_playbook: instance.yml instance_state=present
 
 - name: wait for instance
   hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
 
   tasks:
 
@@ -25,7 +25,7 @@
 
 - name: Prepare instance with ansible
   hosts: coreos
-  gather_facts: no
+  gather_facts: false
 
   roles:
     - defunctzombie.coreos-bootstrap
@@ -52,7 +52,7 @@
     - name: Remove all authorized keys
       shell: rm -vrf /home/core/.ssh/authorized_key*
       args:
-        warn: false # file module doesn't support wildcards
+        warn: false  # file module doesn't support wildcards
 
     - name: AMI creation
       connection: local
@@ -60,7 +60,7 @@
         ansible_python_interpreter: /usr/bin/python
       ec2_ami:
         instance_id: "{{ ansible_ec2_instance_id }}"
-        wait: yes
+        wait: true
         name: "{{ ami_name }}"
         tags:
           Name: "cyberark-conjur"
