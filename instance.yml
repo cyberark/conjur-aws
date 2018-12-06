@@ -13,6 +13,7 @@
         image: "{{ lookup('env', 'BASE_AMI') }}"
         assign_public_ip: true
         vpc_subnet_id: subnet-a9c7b484
+        user_data: ''
         wait: true
         instance_tags:
           Name: cyberark-conjur-base
