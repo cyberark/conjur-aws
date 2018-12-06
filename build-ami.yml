@@ -46,7 +46,7 @@
     terminate_after_create: true
     ami_name: "cyberark-conjur-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
-    - ec2_facts:
+    - ec2_instance_facts:
 
     - name: Remove all authorized keys
       shell: rm -vrf /home/core/.ssh/authorized_key*
