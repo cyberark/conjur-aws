@@ -71,7 +71,7 @@
 
     - name: write AMI id
       local_action: copy content="{{ ami.image_id}}" dest="/ansible/{{ ami_id_filename }}"
-    
+
     - name: write AMI with region to vars file
       local_action: copy content="us-east-1{{ ':' }} {{ ami.image_id}}" dest="/ansible/vars/us-east-1.yml"
 

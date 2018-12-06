@@ -2,21 +2,20 @@
 - name: manage EC2 instance
   hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: set instance state
       ec2:
-         key_name: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
-         instance_ids: "{{ instance_id  | default(omit) }}"
-         state: "{{ instance_state }}"
-         instance_type: m4.large
-         image: "{{ lookup('env', 'BASE_AMI') }}"
-         assign_public_ip: yes
-         vpc_subnet_id: subnet-a9c7b484
-         wait: yes
-         instance_tags:
-           Name: cyberark-conjur-base
-           Description: Base instance for cyberark-conjur AMI
-           Version: "{{ lookup('env', 'CONJUR_VERSION') }}"
-
+        key_name: "{{ lookup('env', 'AWS_SSH_KEY_ID') }}"
+        instance_ids: "{{ instance_id  | default(omit) }}"
+        state: "{{ instance_state }}"
+        instance_type: m4.large
+        image: "{{ lookup('env', 'BASE_AMI') }}"
+        assign_public_ip: true
+        vpc_subnet_id: subnet-a9c7b484
+        wait: true
+        instance_tags:
+          Name: cyberark-conjur-base
+          Description: Base instance for cyberark-conjur AMI
+          Version: "{{ lookup('env', 'CONJUR_VERSION') }}"
       register: ec2
