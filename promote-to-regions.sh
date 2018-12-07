@@ -22,4 +22,5 @@ docker pull $PROMOTER_IMAGE
 summon docker run --rm --env-file @SUMMONENVFILE $PROMOTER_IMAGE \
   --ami $SOURCE_AMI \
   --regions "$regions_string" \
+  --public \
   | tee vars/copied-amis.json
