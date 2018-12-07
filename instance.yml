@@ -2,7 +2,7 @@
 - name: manage EC2 instance
   hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: no
   tasks:
     - name: set instance state
       ec2:
@@ -11,10 +11,10 @@
         state: "{{ instance_state }}"
         instance_type: m4.large
         image: "{{ lookup('env', 'BASE_AMI') }}"
-        assign_public_ip: true
+        assign_public_ip: yes
         vpc_subnet_id: subnet-a9c7b484
         user_data: ''
-        wait: true
+        wait: yes
         instance_tags:
           Name: cyberark-conjur-base
           Description: Base instance for cyberark-conjur AMI

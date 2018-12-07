@@ -4,7 +4,7 @@
 - name: wait for instance
   hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: no
 
   tasks:
 
@@ -25,7 +25,7 @@
 
 - name: Prepare instance with ansible
   hosts: coreos
-  gather_facts: false
+  gather_facts: no
 
   roles:
     - defunctzombie.coreos-bootstrap
@@ -44,7 +44,7 @@
 - name: Create image
   hosts: coreos
   vars:
-    terminate_after_create: true
+    terminate_after_create: yes
     ami_name: "cyberark-conjur-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
     - ec2_metadata_facts:
@@ -60,7 +60,7 @@
         ansible_python_interpreter: /usr/bin/python
       ec2_ami:
         instance_id: "{{ ansible_ec2_instance_id }}"
-        wait: true
+        wait: yes
         name: "{{ ami_name }}"
         tags:
           Name: "cyberark-conjur"

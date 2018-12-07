@@ -1,18 +1,18 @@
 ---
 
 - name: Disable CoreOS Auto-updates
-  become: true
+  become: yes
   block:
     - systemd:
         name: "update-engine"
-        enabled: false
-        masked: true
+        enabled: no
+        masked: yes
 
     - systemd:
         name: "locksmithd"
-        enabled: false
-        masked: true
-        daemon_reload: true
+        enabled: no
+        masked: yes
+        daemon_reload: yes
 
 - name: Copy the image loading script
   copy:
