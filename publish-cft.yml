@@ -7,7 +7,7 @@
     bucket: "conjur-ci-public"
   tasks:
     - name: write template to S3
-      s3:
+      aws_s3:
         bucket: "{{ bucket }}"
         object: "cloudformation/conjur-{{ conjur_version }}.yml"
         src: "/ansible/conjur-{{ conjur_version }}.yml"
