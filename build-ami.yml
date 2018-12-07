@@ -1,5 +1,5 @@
 ---
-- include: instance.yml instance_state=present
+- import_playbook: instance.yml instance_state=present
 
 - name: wait for instance
   hosts: localhost
@@ -18,8 +18,9 @@
         groupname: coreos
       with_items: "{{ ec2.instances }}"
 
-    - include: wait_for_ssh.yml ssh_host="{{ item.public_ip }}"
-      static: no
+    - name: Wait for instance
+      local_action:
+        wait_for port=22 host='{{ item.public_ip }}' search_regex=OpenSSH
       with_items: "{{ ec2.instances }}"
 
 - name: Prepare instance with ansible
@@ -43,15 +44,15 @@
 - name: Create image
   hosts: coreos
   vars:
-    terminate_after_create: true
+    terminate_after_create: yes
     ami_name: "cyberark-conjur-{{ conjur_version }}-{{ ansible_date_time.epoch }}"
   tasks:
-    - ec2_facts:
+    - ec2_metadata_facts:
 
     - name: Remove all authorized keys
       shell: rm -vrf /home/core/.ssh/authorized_key*
       args:
-        warn: false # file module doesn't support wildcards
+        warn: no  # file module doesn't support wildcards
 
     - name: AMI creation
       connection: local
@@ -71,7 +72,7 @@
 
     - name: write AMI id
       local_action: copy content="{{ ami.image_id}}" dest="/ansible/{{ ami_id_filename }}"
-    
+
     - name: write AMI with region to vars file
       local_action: copy content="us-east-1{{ ':' }} {{ ami.image_id}}" dest="/ansible/vars/us-east-1.yml"
 
