@@ -18,6 +18,14 @@ pipeline {
   }
 
   stages {
+    stage('Validate') {
+      parallel {
+        stage('Changelog') {
+          steps { sh './parse-changelog.sh' }
+        }
+      }
+    }
+    
     stage('Build the Conjur AMI') {
       steps {
         sh "summon ./build-ami.sh ${params.CONJUR_VERSION}"
