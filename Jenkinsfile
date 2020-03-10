@@ -15,6 +15,7 @@ pipeline {
 
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI (e.g. 5.x.x)')
+    booleanParam(name: 'PUBLISH_ARTIFACTS', description: 'Whether or not to publish AMIs and CFTs', defaultValue: false)
   }
   
   triggers {
@@ -56,6 +57,7 @@ pipeline {
     stage('Promote AMI to other regions') {
       when {
         branch 'master'
+        expression { return params.PUBLISH_ARTIFACTS }
       }
       steps {
         sh './promote-to-regions.sh $(cat AMI.txt)'
@@ -69,6 +71,7 @@ pipeline {
     stage('Publish CFT') {
       when {
         branch 'master'
+        expression { return params.PUBLISH_ARTIFACTS }
       }
       steps {
         sh "summon ./publish-cft.sh ${params.CONJUR_VERSION}"
