@@ -16,6 +16,10 @@ pipeline {
   parameters {
     string(name: 'CONJUR_VERSION', defaultValue: 'latest', description: 'Version of Conjur to build into AMI (e.g. 5.x.x)')
   }
+  
+  triggers {
+    cron(getDailyCronString())
+  }
 
   stages {
     stage('Validate') {
