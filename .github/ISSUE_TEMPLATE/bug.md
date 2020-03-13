@@ -2,7 +2,7 @@
 name: Bug
 about: Create a bug report to help us improve
 title: ''
-labels: kind/bug, component/conjur-sdk
+labels: component/conjur, kind/bug
 assignees: ''
 
 ---
