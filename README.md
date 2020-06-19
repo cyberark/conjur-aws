@@ -1,7 +1,10 @@
 # Overview
 ----
-**NOTICE**: This project is currently unusable, and there are no AMIs available for recent
-releases of Conjur OSS. Please consider other [deployment methods](https://docs.conjur.org/Latest/en/Content/OSS/Installation/Install_methods.htm).
+**NOTICE: This project is currently unusable, and there are no AMIs available for recent
+releases of Conjur OSS. Please consider other [deployment methods](https://docs.conjur.org/Latest/en/Content/OSS/Installation/Install_methods.htm).**
+
+If you have any questions, please contact the maintainers on [Discourse](https://discuss.cyberarkcommons.org).
+
 ----
 
 We use Ansible running in a Docker container to build the Conjur CE AMI. The `Jenkinsfile` describes the build pipeline.
